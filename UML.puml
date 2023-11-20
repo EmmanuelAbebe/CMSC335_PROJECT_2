@@ -1,0 +1,188 @@
+@startuml
+package Utility {
+
+    class ShapeManager {
+        - VBox parameterFields
+        - List<TextField> inputFields
+        - Label resultLabel
+        - ShapeDrawer shapeDrawer
+        - Canvas shapeCanvas
+        - Group shape3DGroup
+        - SubScene shape3DSubScene
+        - PointLight pointLight
+        - PerspectiveCamera camera
+
+        + ShapeManager(VBox, Label, ShapeDrawer, Canvas, Group, SubScene, PointLight, PerspectiveCamera)
+        + VBox getParameterFields()
+        + Label getResultLabel()
+        + void updateShapeRepresentation(String)
+        + void updateParameterFields(String)
+        + void addParameterField(String)
+        - boolean is3DShape(String)
+        - void setLighting(int, int, int, Color)
+        - void set3DShapePosition(Shape3D)
+        - void setCameraPosition(int, int, int)
+        - void draw3DShape(String)
+        + void calculateShape(String)
+    }
+
+    class InputValidator {
+        + {static} void InputCheck(double... inputs)
+        + {static} void CheckTrianlgeInput(double a, double b, double c)
+        + {static} void CheckTorusInputs(double... radii)
+    }
+
+    class ShapeDrawer {
+        - GraphicsContext gc
+
+        + ShapeDrawer(GraphicsContext)
+        + boolean is3DShape(String)
+        + void applyRotation(Shape3D, double, double, double)
+        + void draw2DShape(String)
+        + Shape3D draw3DShape(String)
+        + MeshView createHollowCone(int, int)
+        + MeshView createHollowTorus(int, int)
+    }
+
+}
+
+class App {
+    - VBox root
+    - ShapeManager shapeManager
+    - ShapeDrawer shapeDrawer
+    - Canvas shapeCanvas
+    - PerspectiveCamera camera
+    - Group shape3DGroup
+    - SubScene shape3DSubScene
+    - PointLight pointLight
+
+    + void start(Stage)
+    + void main(String[])
+}
+
+package Shapes {
+
+    abstract class Shape {
+        - int numberOfDimensions
+        + Shape(int)
+        + int getNumberOfDimensions()
+        {abstract} + String toString(String)
+    }
+
+    abstract class ThreeDimensionalShape {
+        + ThreeDimensionalShape()
+        {abstract} + double getVolume()
+        {abstract} + double getSurfaceArea()
+        + String toString(String)
+        + String getResult()
+    }
+
+    abstract class TwoDimensionalShape {
+        + TwoDimensionalShape()
+        {abstract} + double getArea()
+        {abstract} + double getPerimeter()
+        + String toString(String)
+        + String getResult()
+    }
+
+    class Circle {
+        - double radius
+        + Circle(double)
+        + Circle()
+        + double getArea()
+        + double getPerimeter()
+        + String toString()
+    }
+
+    class Rectangle {
+        - double width
+        - double length
+        + Rectangle(double, double)
+        + Rectangle()
+        + double getArea()
+        + double getPerimeter()
+        + String toString()
+        + javafx.scene.shape.Rectangle fxRectangle()
+    }
+
+    class Square {
+        - double sideLength
+        + Square(double)
+        + Square()
+        + double getArea()
+        + double getPerimeter()
+        + String toString()
+    }
+
+    class Triangle {
+        - double sideA
+        - double sideB
+        - double sideC
+        + Triangle(double, double, double)
+        + double getArea()
+        + double getPerimeter()
+        + String toString()
+    }
+
+    class Cone {
+        - double height
+        - double radius
+        + Cone(double, double)
+        + Cone()
+        + double getVolume()
+        + double getSurfaceArea()
+        + String toString()
+    }
+
+    class Cube {
+        - double sideLength
+        + Cube(double)
+        + Cube()
+        + double getVolume()
+        + double getSurfaceArea()
+        + String toString()
+    }
+
+    class Cylinder {
+        - double height
+        - double radius
+        + Cylinder(double, double)
+        + Cylinder()
+        + double getVolume()
+        + double getSurfaceArea()
+        + String toString()
+    }
+
+    class Sphere {
+        - double radius
+        + Sphere(double)
+        + Sphere()
+        + double getVolume()
+        + double getSurfaceArea()
+        + String toString()
+    }
+
+    class Torus {
+        - double minorRadius
+        - double majorRadius
+        + Torus(double, double)
+        + double getVolume()
+        + double getSurfaceArea()
+        + String toString()
+    }
+
+    Cone --|> ThreeDimensionalShape
+    Cube --|> ThreeDimensionalShape
+    Cylinder --|> ThreeDimensionalShape
+    Sphere --|> ThreeDimensionalShape
+    Torus --|> ThreeDimensionalShape
+    Circle --|> TwoDimensionalShape
+    Rectangle --|> TwoDimensionalShape
+    Square --|> TwoDimensionalShape
+    Triangle --|> TwoDimensionalShape
+    ThreeDimensionalShape --|> Shape
+    TwoDimensionalShape --|> Shape
+
+}
+@enduml
+
